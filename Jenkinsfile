@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'nachiket1/my-cicd-app:latest'
-        KUBECONFIG = '/var/lib/jenkins/kubeconfig'
-    }
+    DOCKER_IMAGE = "nachiket1/my-cicd-app:${BUILD_NUMBER}"
+    KUBECONFIG = '/var/lib/jenkins/kubeconfig'
+}
 
     stages {
 
