@@ -1,0 +1,1 @@
+Project report images will be placed in this directory after the matching project PDFs are supplied. Images should be extracted from the user's own reports and mapped to the corresponding project page. No placeholder or unrelated images are substituted for report figures.

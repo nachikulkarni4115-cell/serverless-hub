@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} — Nachiket Kulkarni{% endblock %}
+{% block content %}
+<section class="detail-hero section-wrap" id="top">
+  <a class="back-link reveal" href="{{ url_for('home') }}#work">← ALL PROJECTS</a>
+  <div class="detail-kicker reveal"><span class="eyebrow">{{ project.number }} / {{ project.category }}</span><span class="mono">PROJECT NOTES · 2026</span></div>
+  <h1 class="detail-title reveal">{{ project.title }}<span class="lime-dot">.</span></h1>
+  <p class="detail-deck reveal">{{ project.short }}</p>
+  <div class="detail-visual art-{{ project.accent }} reveal"><div class="art-grid"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><span class="art-mark">{{ project.mark }}</span><span class="detail-visual-caption mono">IDEA → IMPLEMENTATION → ITERATION</span></div>
+</section>
+<section class="detail-body section-wrap">
+  <div class="detail-main">
+    <div class="detail-block reveal"><span class="eyebrow">01 / OVERVIEW</span><p class="detail-lede">{{ project.summary }}</p></div>
+    <div class="detail-block reveal"><span class="eyebrow">02 / THE PROBLEM</span><h2>Why this<br><em>matters.</em></h2><p>{{ project.problem }}</p></div>
+    <div class="detail-block reveal"><span class="eyebrow">03 / APPROACH</span><h2>From idea<br>to <em>workflow.</em></h2><p>{{ project.approach }}</p></div>
+    <div class="detail-block reveal"><span class="eyebrow">04 / KEY AREAS</span><div class="feature-list">{% for feature in project.features %}<div class="feature-row"><span class="mono">0{{ loop.index }}</span><p>{{ feature }}</p><span>↗</span></div>{% endfor %}</div></div>
+    <div class="detail-block reveal"><span class="eyebrow">05 / TECHNOLOGY</span>{% if project.stack %}<div class="tech-tags">{% for tech in project.stack %}<span>{{ tech }}</span>{% endfor %}</div>{% else %}<div class="tech-tags"><span>ADD VERIFIED STACK</span></div>{% endif %}<p class="stack-note">{{ project.stack_note }}</p></div>
+    <div class="honesty-note reveal"><span>✳</span><p><strong>Make it yours.</strong> Before publishing, update this page with your actual implementation details, personal contribution, screenshots, repository link, and results. Avoid claiming features that are not in your code.</p></div>
+  </div>
+  <aside class="detail-sidebar reveal"><div class="sidebar-sticky"><span class="eyebrow">PROJECT INDEX</span><p class="sidebar-current">{{ project.number }} <span>—</span> {{ project.title }}</p><div class="sidebar-line"></div><span class="eyebrow">NEXT UP</span><a class="next-project" href="{{ url_for('project_detail', slug=next_project.slug) }}"><span class="mono">{{ next_project.number }}</span><strong>{{ next_project.title }}</strong><span class="next-arrow">↗</span></a><a class="all-work-link" href="{{ url_for('home') }}#work">VIEW ALL WORK ↗</a></div></aside>
+</section>
+<section class="next-banner"><a href="{{ url_for('project_detail', slug=next_project.slug) }}"><span class="eyebrow">UP NEXT / {{ next_project.number }}</span><h2>{{ next_project.title }} <span>↗</span></h2></a></section>
+{% endblock %}

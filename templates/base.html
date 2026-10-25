@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5ef">
+  <meta name="description" content="Nachiket Kulkarni — developer portfolio across AI, cloud, and software projects.">
+  <title>{% block title %}Nachiket Kulkarni — Developer & Builder{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="cursor-glow" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="wordmark" href="{{ url_for('home') }}" aria-label="Nachiket Kulkarni home">
+      <span class="wordmark-mark">N<span>.</span></span>
+      <span class="wordmark-name">NACHIKET<br>KULKARNI</span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="{{ url_for('home') }}#work">Work <span>↘</span></a>
+      <a href="{{ url_for('home') }}#about">About</a>
+      <a href="{{ url_for('home') }}#contact">Contact <span>↗</span></a>
+    </nav>
+    <a class="availability" href="{{ url_for('home') }}#contact"><span class="status-dot"></span> OPEN TO OPPORTUNITIES</a>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="site-footer">
+    <a class="footer-signature" href="{{ url_for('home') }}">NK<span>✳</span></a>
+    <p>DESIGNED WITH INTENTION. BUILT WITH CURIOSITY.</p>
+    <a href="#top">BACK TO TOP ↑</a>
+  </footer>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
