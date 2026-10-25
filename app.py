@@ -1,208 +1,122 @@
-from flask import Flask, request, render_template_string
-from markupsafe import escape
+from flask import Flask, render_template, abort
 
 app = Flask(__name__)
 
-TEMPLATE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ title }} | My College mitwpu</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f1f5f9;
-            color: #1e293b;
-        }
-        header {
-            background: #12376a;
-            color: white;
-            padding: 22px 6%;
-        }
-        nav { display: flex; flex-wrap: wrap; gap: 15px; }
-        nav a { color: white; text-decoration: none; }
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 25px;
-            background: white;
-            border-radius: 10px;
-        }
-        a { color: #1d4ed8; }
-        input, button { padding: 10px; margin: 5px 0; }
-        button {
-            background: #12376a;
-            color: white;
-            border: 0;
-            cursor: pointer;
-        }
-        footer { text-align: center; padding: 20px; }
-    </style>
-</head>
-<body>
-<header>
-    <h1>My College Website</h1>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about.html">About</a>
-        <a href="/students/login">Student Login</a>
-        <a href="/faculty">Faculty</a>
-        <a href="/courses/web-development">Courses</a>
-        <a href="/results?year=2026">Results</a>
-        <a href="/search?q=computer">Search</a>
-        <a href="/2026/article.html?id=10">Blog</a>
-        <a href="/url-lab">URL Lab</a>
-    </nav>
-</header>
-<main>
-    {{ content|safe }}
-</main>
-<footer>URL Structure Practical Project</footer>
-</body>
-</html>
-"""
-
-def show_page(title, content):
-    return render_template_string(
-        TEMPLATE, title=title, content=content
-    )
+PROJECTS = [
+    {
+        "slug": "project-management-rag",
+        "number": "01",
+        "category": "AI / KNOWLEDGE SYSTEMS",
+        "title": "Project Management System",
+        "short": "A project workspace concept enhanced with retrieval-augmented generation (RAG).",
+        "summary": "A project-management experience that connects project information with knowledge retrieval, helping users find relevant context without digging through disconnected notes.",
+        "problem": "Project details can become scattered across tasks, documents, and conversations. The project explores how a structured workspace and retrieval-based AI can make that information easier to find and use.",
+        "approach": "Organize project information in a consistent workspace and use a retrieval layer to surface relevant context for a user's question. The exact retrieval pipeline and implemented features should be confirmed against the final source code.",
+        "features": ["Project information in one workspace", "Knowledge retrieval using a RAG approach", "Structured data storage", "Container-friendly development workflow"],
+        "stack": ["RAG", "PostgreSQL", "Docker"],
+        "stack_note": "These technologies were identified in the portfolio brief. Add any embedding model, vector store, backend framework, or LLM only if it is present in your implementation.",
+        "accent": "violet",
+        "mark": "RAG"
+    },
+    {
+        "slug": "cloud-campus",
+        "number": "02",
+        "category": "CLOUD / WEB APPLICATION",
+        "title": "Cloud Campus",
+        "short": "A campus-focused digital experience built around accessible web services.",
+        "summary": "A cloud-oriented campus project intended to bring useful student-facing information or workflows into a single digital experience.",
+        "problem": "Campus information and student workflows can be spread across separate channels. This project presents a digital approach to making campus-related services easier to access.",
+        "approach": "Use a web application as the central experience, with cloud deployment and service configuration documented alongside the implementation. Confirm the exact user roles and features from your project repository before publishing.",
+        "features": ["Campus-oriented digital experience", "Web-based access", "Potential for cloud deployment and scaling", "A foundation for adding student services"],
+        "stack": [],
+        "stack_note": "Technology details were not included in the supplied brief. Replace this note with the exact framework, database, and cloud services you used.",
+        "accent": "blue",
+        "mark": "CC"
+    },
+    {
+        "slug": "face-recognition-attendance",
+        "number": "03",
+        "category": "COMPUTER VISION",
+        "title": "Face Recognition Attendance",
+        "short": "An attendance workflow explored through face recognition.",
+        "summary": "A computer-vision project focused on using face recognition as part of an attendance workflow.",
+        "problem": "Manual attendance can take time and may introduce recording errors. This project explores how facial recognition can support a more streamlined attendance process.",
+        "approach": "A typical workflow detects a face, compares it against enrolled identities, and records a result when the match meets the application's criteria. Keep only the steps and safeguards that your implementation actually includes.",
+        "features": ["Face-based identification concept", "Attendance recording workflow", "Computer-vision pipeline", "Opportunity to evaluate recognition accuracy and edge cases"],
+        "stack": [],
+        "stack_note": "Add the actual libraries and storage layer used in your project, such as OpenCV or a database, only if they are part of your code.",
+        "accent": "lime",
+        "mark": "CV"
+    },
+    {
+        "slug": "voice-controlled-ai-agent",
+        "number": "04",
+        "category": "AI / VOICE INTERACTION",
+        "title": "Voice-Controlled AI Agent",
+        "short": "A voice-first interface for interacting with an AI assistant.",
+        "summary": "An AI-agent project exploring how spoken input can become an accessible way to issue commands or request assistance.",
+        "problem": "Typing is not always the most convenient way to interact with a digital assistant. Voice interaction can make common actions feel more direct and natural.",
+        "approach": "A voice-agent workflow commonly combines speech input, intent or language processing, an action or response layer, and spoken or on-screen output. Update this section to match the components implemented in your project.",
+        "features": ["Voice-first interaction concept", "Natural-language request handling", "Assistant response workflow", "Potential for hands-free use cases"],
+        "stack": [],
+        "stack_note": "The exact speech-recognition, LLM, automation, and text-to-speech technologies were not included in the supplied brief.",
+        "accent": "orange",
+        "mark": "VOX"
+    },
+    {
+        "slug": "emotion-detection",
+        "number": "05",
+        "category": "MACHINE LEARNING",
+        "title": "Emotion Detection",
+        "short": "A machine-learning project exploring emotion classification.",
+        "summary": "A project focused on classifying emotional signals from the input type supported by the implementation.",
+        "problem": "Emotion-related signals are complex and context-dependent. This project explores a machine-learning approach to categorizing signals into a defined set of classes.",
+        "approach": "The application processes an input, applies a trained or configured model, and presents a predicted class. The input modality, dataset, labels, and evaluation results should be specified from your actual project.",
+        "features": ["Emotion-classification workflow", "Model-driven prediction", "Results presented to the user", "Scope to document model evaluation and limitations"],
+        "stack": [],
+        "stack_note": "Confirm whether your implementation uses facial images, text, audio, or another input type, and list the actual model and libraries.",
+        "accent": "pink",
+        "mark": "EM"
+    },
+    {
+        "slug": "milo-ai-study-partner",
+        "number": "06",
+        "category": "AI LEARNING",
+        "title": "Milo — AI Study Partner",
+        "short": "An AI-assisted learning companion designed to support study sessions.",
+        "summary": "Milo is an AI study-partner concept that helps learners interact with study support through a focused learning experience.",
+        "problem": "Students often need a convenient way to ask questions, revisit concepts, and maintain momentum while studying. Milo explores an AI-supported interface for that experience.",
+        "approach": "The project brief identifies React, FastAPI, and Supabase. Together, these can support a frontend, API layer, and backend data services; describe specific AI capabilities only where they are implemented.",
+        "features": ["Dedicated study-partner experience", "Frontend and API separation", "Backend data services", "Potential to extend with study history and personalized support"],
+        "stack": ["React", "FastAPI", "Supabase"],
+        "stack_note": "The supplied brief names these technologies. Add the specific model provider and study features only if they are implemented in your current code.",
+        "accent": "lime",
+        "mark": "MILO"
+    },
+]
 
 @app.route("/")
 def home():
-    return show_page("Home", """
-        <h2>Welcome to My College</h2>
-        <p>This website demonstrates URL structure and routing.</p>
-        <ul>
-            <li><a href="/students/login">Student Login</a></li>
-            <li><a href="/faculty">Faculty</a></li>
-            <li><a href="/courses/web-development#modules">Courses</a></li>
-            <li><a href="/results?year=2026">Examination Results</a></li>
-        </ul>
-        <h2 id="details">About This Project</h2>
-        <p>Each page has a different URL path.</p>
-        <p><a href="/#details">Open the details section</a></p>
-    """)
+    return render_template("index.html", projects=PROJECTS)
 
-@app.route("/about.html")
-def about():
-    return show_page("About", """
-        <h2>About Our College</h2>
-        <p>Welcome to our college website.</p>
-        <p>Example file-like URL: /about.html</p>
-    """)
-
-@app.route("/students/login", methods=["GET", "POST"])
-def login():
-    message = ""
-    if request.method == "POST":
-        message = "<p>Demo form submitted successfully.</p>"
-
-    return show_page("Student Login", """
-        <h2>Student Login</h2>
-        <p>This is a demonstration form, not real authentication.</p>
-        <form method="POST">
-            <label>Student ID</label><br>
-            <input name="student_id" required><br>
-            <label>Password</label><br>
-            <input type="password" name="password" required><br>
-            <button type="submit">Demo Login</button>
-        </form>
-    """ + message)
-
-@app.route("/faculty")
-def faculty():
-    return show_page("Faculty", """
-        <h2>Our Faculty</h2>
-        <ul>
-            <li>Dr. A. Sharma - Computer Science</li>
-            <li>Prof. R. Patil - Information Technology</li>
-            <li>Dr. S. Mehta - Electronics</li>
-        </ul>
-    """)
-
-@app.route("/courses/web-development")
-def courses():
-    return show_page("Courses", """
-        <h2>Web Development Course</h2>
-        <p>Learn HTML, CSS, JavaScript and Python.</p>
-        <a href="#modules">Jump to course modules</a>
-        <h3 id="modules">Course Modules</h3>
-        <ol>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>Python and Flask</li>
-        </ol>
-    """)
-
-@app.route("/results")
-def results():
-    year = escape(request.args.get("year", "2026"))
-    return show_page("Results", f"""
-        <h2>Examination Results</h2>
-        <p>Selected year: {year}</p>
-        <p>These are sample results.</p>
-        <table border="1" cellpadding="10">
-            <tr><th>Student</th><th>Subject</th><th>Marks</th></tr>
-            <tr><td>Student A</td><td>Web Technology</td><td>85</td></tr>
-            <tr><td>Student B</td><td>Python</td><td>90</td></tr>
-        </table>
-    """)
-
-@app.route("/search")
-def search():
-    query = escape(request.args.get("q", ""))
-    return show_page("Search", f"""
-        <h2>Search Website</h2>
-        <form action="/search" method="GET">
-            <input name="q" placeholder="Enter search term">
-            <button type="submit">Search</button>
-        </form>
-        <p>Search query: {query or "No query entered"}</p>
-        <p>Example: /search?q=computer</p>
-    """)
-
-@app.route("/2026/article.html")
-def article():
-    article_id = escape(request.args.get("id", "10"))
-    return show_page("Blog Article", f"""
-        <h2>College Technology Blog</h2>
-        <p>Article ID: {article_id}</p>
-        <p>This sample article discusses web technology.</p>
-    """)
-
-@app.route("/url-lab")
-def url_lab():
-    return show_page("URL Lab", """
-        <h2>URL Structure Lab</h2>
-        <table border="1" cellpadding="8">
-            <tr><th>Component</th><th>Example</th></tr>
-            <tr><td>Protocol</td><td>http</td></tr>
-            <tr><td>Host</td><td>127.0.0.1</td></tr>
-            <tr><td>Port</td><td>5000</td></tr>
-            <tr><td>Path</td><td>/students/login</td></tr>
-            <tr><td>Query</td><td>?year=2026</td></tr>
-            <tr><td>Fragment</td><td>#modules</td></tr>
-        </table>
-        <h3>College Website URLs</h3>
-        <ul>
-            <li>/</li>
-            <li>/students/login</li>
-            <li>/faculty</li>
-            <li>/courses/web-development</li>
-            <li>/results?year=2026</li>
-        </ul>
-    """)
+@app.route("/projects/<slug>")
+def project_detail(slug):
+    project = next((item for item in PROJECTS if item["slug"] == slug), None)
+    if project is None:
+        abort(404)
+    index = PROJECTS.index(project)
+    next_project = PROJECTS[(index + 1) % len(PROJECTS)]
+    previous_project = PROJECTS[(index - 1) % len(PROJECTS)]
+    return render_template(
+        "project_detail.html",
+        project=project,
+        next_project=next_project,
+        previous_project=previous_project,
+    )
 
 @app.errorhandler(404)
 def not_found(error):
-    return show_page("Not Found", """
-        <h2>404 - Page Not Found</h2>
-        <a href="/">Return Home</a>
-    """), 404
+    return render_template("404.html"), 404
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5000, debug=True)
