@@ -150,7 +150,16 @@ p { text-wrap: pretty; max-width: 62ch; }
 .tags-small li { border-color: var(--line); color: var(--muted); }
 
 /* ---------- Hero ---------- */
-.hero { padding-block: clamp(3.5rem, 9vw, 7.5rem) clamp(3rem, 7vw, 5.5rem); }
+.hero {
+  padding-block: clamp(3.5rem, 9vw, 7.5rem) clamp(3rem, 7vw, 5.5rem);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(92vh, 56rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .hero-kicker { font-family: var(--font-display); font-size: var(--t-sm); color: var(--muted); margin-bottom: 1.5rem; max-width: none; }
 .hero-title { font-size: var(--t-hero); font-weight: 700; letter-spacing: -0.04em; line-height: 1.01; max-width: 15ch; }
 .hero-lead { margin-top: 1.75rem; font-size: clamp(1.1rem, 1.7vw, 1.3rem); line-height: 1.65; color: var(--muted); max-width: 44rem; }
@@ -463,4 +472,127 @@ main, .site-footer { position: relative; z-index: 1; }
   .ticker { overflow-x: auto; }
   .cursor-glow { display: none; }
   .btn:hover, .tags li:hover { transform: none; }
+}
+
+
+/* ---------- Hero video (real aerial night city) ---------- */
+.hero-video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: #050b12;
+}
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  opacity: 0.55;
+  filter: saturate(1.12) brightness(0.78) contrast(1.08);
+  transform: scale(1.04);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-video {
+    animation: hero-video-drift 55s ease-in-out infinite alternate;
+  }
+}
+.hero-video-fade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(11, 22, 32, 0.45) 0%,
+      rgba(11, 22, 32, 0.55) 35%,
+      rgba(11, 22, 32, 0.82) 72%,
+      var(--bg) 100%
+    ),
+    radial-gradient(
+      ellipse 90% 70% at 50% 15%,
+      rgba(11, 22, 32, 0.15) 0%,
+      rgba(11, 22, 32, 0.55) 100%
+    );
+  pointer-events: none;
+}
+@keyframes hero-video-drift {
+  from { transform: scale(1.04) translate(0, 0); }
+  to { transform: scale(1.10) translate(-1.2%, 0.8%); }
+}
+
+.hero .wrap { position: relative; z-index: 1; }
+.hero-kicker {
+  color: #c8d4e0;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+}
+.hero-title {
+  color: #f2f6fa;
+  text-shadow:
+    0 2px 24px rgba(0, 0, 0, 0.55),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.hero-lead {
+  color: #c5d2de;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+.hero .release {
+  background: rgba(11, 22, 32, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 180, 84, 0.18);
+  border-radius: 8px;
+  padding: 1rem 1.15rem;
+}
+.hero .stamp {
+  opacity: 0.85;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.45));
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: min(88vh, 40rem);
+    padding-block: clamp(3rem, 8vw, 5rem) clamp(2.5rem, 6vw, 4rem);
+  }
+  .hero-video {
+    opacity: 0.48;
+    filter: saturate(1.08) brightness(0.72) contrast(1.1);
+    object-position: center 35%;
+  }
+  .hero-video-fade {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(11, 22, 32, 0.55) 0%,
+        rgba(11, 22, 32, 0.68) 40%,
+        rgba(11, 22, 32, 0.9) 78%,
+        var(--bg) 100%
+      );
+  }
+  .hero-title { max-width: 12ch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { animation: none !important; opacity: 0.28; }
+  .hero-video-wrap { background: #0b1620; }
+}
+
+.kicker-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 0.55rem;
+  vertical-align: 0.1em;
+  box-shadow: 0 0 0 0 rgba(255, 180, 84, 0.5);
+  animation: kicker-pulse 2.4s ease-out infinite;
+}
+@keyframes kicker-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 180, 84, 0.45); }
+  70% { box-shadow: 0 0 0 0.55rem rgba(255, 180, 84, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 180, 84, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kicker-dot { animation: none; }
 }

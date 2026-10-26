@@ -253,3 +253,21 @@
     }
   }
 })();
+
+
+/* Prefer lighter hero video on small screens / Save-Data */
+(function () {
+  const video = document.querySelector('.hero-video');
+  if (!video) return;
+  const saveData = navigator.connection && navigator.connection.saveData;
+  const slow = navigator.connection && /2g|slow-2g/.test(navigator.connection.effectiveType || '');
+  const mobile = window.matchMedia('(max-width: 767px)').matches;
+  if (saveData || slow || mobile) {
+    const light = video.querySelector('source[src*="720"]');
+    if (light) {
+      video.src = light.getAttribute('src');
+      video.load();
+      video.play().catch(function () {});
+    }
+  }
+})();

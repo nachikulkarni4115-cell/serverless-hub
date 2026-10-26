@@ -2,6 +2,21 @@
 {% block content %}
 
 <section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-video-wrap" aria-hidden="true">
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="{{ url_for('static', filename='videos/hero-city-poster.jpg') }}"
+    >
+      <source src="{{ url_for('static', filename='videos/hero-city-real.mp4') }}" type="video/mp4">
+      <source src="{{ url_for('static', filename='videos/hero-city-real-720.mp4') }}" type="video/mp4">
+    </video>
+    <div class="hero-video-fade"></div>
+  </div>
 
     <div class="stamp" aria-hidden="true">
       <svg viewBox="0 0 160 160" focusable="false">
@@ -13,7 +28,7 @@
       </svg>
     </div>
   <div class="wrap">
-    <p class="hero-kicker">Nachiket Kulkarni · Computer Science student · Pune</p>
+    <p class="hero-kicker" data-reveal><span class="kicker-dot"></span>Nachiket Kulkarni · Computer Science student · Pune</p>
     <h1 class="hero-title" id="hero-title" aria-label="I build software, and the pipeline that ships it.">{% for word in "I build software, and the pipeline that ships it.".split() %}<span class="w" aria-hidden="true"><span style="--w: {{ loop.index0 }}">{{ word }}</span></span> {% endfor %}</h1>
     <p class="hero-lead">I’m studying cloud computing at MIT-WPU. My team projects cover Flask and FastAPI backends, React interfaces and AI features, along with the Docker, Jenkins and Kubernetes tooling I use to deploy them.</p>
     <div class="hero-actions">
