@@ -1,23 +1,122 @@
 {% extends "base.html" %}
-{% block title %}{{ project.title }} — Nachiket Kulkarni{% endblock %}
+{% block title %}{{ project.title }} | Nachiket Kulkarni{% endblock %}
+{% block description %}{{ project.short }}{% endblock %}
 {% block content %}
-<section class="detail-hero section-wrap" id="top">
-  <a class="back-link reveal" href="{{ url_for('home') }}#work">← ALL PROJECTS</a>
-  <div class="detail-kicker reveal"><span class="eyebrow">{{ project.number }} / {{ project.category }}</span><span class="mono">PROJECT NOTES · 2026</span></div>
-  <h1 class="detail-title reveal">{{ project.title }}<span class="lime-dot">.</span></h1>
-  <p class="detail-deck reveal">{{ project.short }}</p>
-  <div class="detail-visual art-{{ project.accent }} reveal"><div class="art-grid"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><span class="art-mark">{{ project.mark }}</span><span class="detail-visual-caption mono">IDEA → IMPLEMENTATION → ITERATION</span></div>
-</section>
-<section class="detail-body section-wrap">
-  <div class="detail-main">
-    <div class="detail-block reveal"><span class="eyebrow">01 / OVERVIEW</span><p class="detail-lede">{{ project.summary }}</p></div>
-    <div class="detail-block reveal"><span class="eyebrow">02 / THE PROBLEM</span><h2>Why this<br><em>matters.</em></h2><p>{{ project.problem }}</p></div>
-    <div class="detail-block reveal"><span class="eyebrow">03 / APPROACH</span><h2>From idea<br>to <em>workflow.</em></h2><p>{{ project.approach }}</p></div>
-    <div class="detail-block reveal"><span class="eyebrow">04 / KEY AREAS</span><div class="feature-list">{% for feature in project.features %}<div class="feature-row"><span class="mono">0{{ loop.index }}</span><p>{{ feature }}</p><span>↗</span></div>{% endfor %}</div></div>
-    <div class="detail-block reveal"><span class="eyebrow">05 / TECHNOLOGY</span>{% if project.stack %}<div class="tech-tags">{% for tech in project.stack %}<span>{{ tech }}</span>{% endfor %}</div>{% else %}<div class="tech-tags"><span>ADD VERIFIED STACK</span></div>{% endif %}<p class="stack-note">{{ project.stack_note }}</p></div>
-    <div class="honesty-note reveal"><span>✳</span><p><strong>Make it yours.</strong> Before publishing, update this page with your actual implementation details, personal contribution, screenshots, repository link, and results. Avoid claiming features that are not in your code.</p></div>
+<article class="detail">
+  <header class="detail-hero">
+    <div class="wrap">
+      <a class="back-link" href="{{ url_for('home') }}#projects">All projects</a>
+      <p class="project-meta">{{ project.kind }} · {{ project.year }} · {{ project.team }}</p>
+      <h1 class="detail-title">{{ project.title }}</h1>
+      <p class="detail-deck">{{ project.short }}</p>
+      {% if project.credit %}<p class="project-credit">{{ project.credit }}</p>{% endif %}
+    </div>
+  </header>
+
+  <div class="wrap detail-layout">
+    <div class="detail-main">
+      {% if project.images %}
+      <div class="shots">
+        {% for img in project.images %}
+        <figure class="shot">
+          <img src="{{ url_for('static', filename='images/projects/' ~ img.file) }}" width="{{ img.w }}" height="{{ img.h }}" alt="{{ img.alt }}" loading="{{ 'eager' if loop.first else 'lazy' }}" decoding="async" onerror="this.closest('figure').hidden=true">
+          <figcaption>{{ img.caption }}</figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <section class="detail-block" id="overview">
+        <h2>Overview</h2>
+        <p class="detail-lede">{{ project.summary }}</p>
+      </section>
+
+      <section class="detail-block" id="problem">
+        <h2>The problem</h2>
+        <p>{{ project.problem }}</p>
+      </section>
+
+      {% if project.audience %}
+      <section class="detail-block" id="audience">
+        <h2>Who it’s for</h2>
+        <p>{{ project.audience }}</p>
+      </section>
+      {% endif %}
+
+      <section class="detail-block" id="how">
+        <h2>How it works</h2>
+        <ol class="flow flow-row" aria-label="How {{ project.title }} works">
+          {% for step in project.flow %}
+          <li><strong>{{ step.label }}</strong><span>{{ step.detail }}</span></li>
+          {% endfor %}
+        </ol>
+        <p>{{ project.how }}</p>
+      </section>
+
+      <section class="detail-block" id="features">
+        <h2>What it does</h2>
+        <ul class="check-list">{% for feature in project.features %}<li>{{ feature }}</li>{% endfor %}</ul>
+      </section>
+
+      <section class="detail-block" id="stack">
+        <h2>Built with</h2>
+        <ul class="tags">{% for tech in project.stack %}<li>{{ tech }}</li>{% endfor %}</ul>
+      </section>
+
+      {% if project.targets %}
+      <section class="detail-block" id="targets">
+        <h2>Design targets</h2>
+        <p>These were goals the team set for the design. They are not measured results.</p>
+        <ul class="check-list">{% for item in project.targets %}<li>{{ item }}</li>{% endfor %}</ul>
+      </section>
+      {% endif %}
+
+      {% if project.limits %}
+      <section class="detail-block" id="limits">
+        <h2>Limitations the report lists</h2>
+        <ul class="plain-list">{% for item in project.limits %}<li>{{ item }}</li>{% endfor %}</ul>
+      </section>
+      {% endif %}
+
+      {% if project.next_steps %}
+      <section class="detail-block" id="next">
+        <h2>Where it could go next</h2>
+        <p>Based on the limitations and gaps the report lists.</p>
+        <ul class="check-list">{% for item in project.next_steps %}<li>{{ item }}</li>{% endfor %}</ul>
+      </section>
+      {% endif %}
+    </div>
+
+    <aside class="detail-side" aria-label="Project facts">
+      <nav class="toc" aria-label="On this page">
+        <p class="side-label">On this page</p>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#problem">The problem</a></li>
+          {% if project.audience %}<li><a href="#audience">Who it’s for</a></li>{% endif %}
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#features">What it does</a></li>
+          <li><a href="#stack">Built with</a></li>
+          {% if project.targets %}<li><a href="#targets">Design targets</a></li>{% endif %}
+          {% if project.limits %}<li><a href="#limits">Limitations</a></li>{% endif %}
+          {% if project.next_steps %}<li><a href="#next">Where it could go next</a></li>{% endif %}
+        </ul>
+      </nav>
+      <dl class="facts facts-compact">
+        <div><dt>Context</dt><dd>{{ project.term }}</dd></div>
+        <div><dt>Year</dt><dd>{{ project.year }}</dd></div>
+        <div><dt>Team</dt><dd>{{ project.team }}</dd></div>
+        <div><dt>Institution</dt><dd>MIT World Peace University, Pune</dd></div>
+      </dl>
+      <p class="side-label">Next project</p>
+      <a class="side-next" href="{{ url_for('project_detail', slug=next_project.slug) }}">{{ next_project.title }}</a>
+      <a class="side-all" href="{{ url_for('home') }}#projects">See all projects</a>
+    </aside>
   </div>
-  <aside class="detail-sidebar reveal"><div class="sidebar-sticky"><span class="eyebrow">PROJECT INDEX</span><p class="sidebar-current">{{ project.number }} <span>—</span> {{ project.title }}</p><div class="sidebar-line"></div><span class="eyebrow">NEXT UP</span><a class="next-project" href="{{ url_for('project_detail', slug=next_project.slug) }}"><span class="mono">{{ next_project.number }}</span><strong>{{ next_project.title }}</strong><span class="next-arrow">↗</span></a><a class="all-work-link" href="{{ url_for('home') }}#work">VIEW ALL WORK ↗</a></div></aside>
-</section>
-<section class="next-banner"><a href="{{ url_for('project_detail', slug=next_project.slug) }}"><span class="eyebrow">UP NEXT / {{ next_project.number }}</span><h2>{{ next_project.title }} <span>↗</span></h2></a></section>
+
+  <nav class="pager" aria-label="More projects">
+    <a href="{{ url_for('project_detail', slug=previous_project.slug) }}"><span>Previous</span>{{ previous_project.title }}</a>
+    <a class="pager-next" href="{{ url_for('project_detail', slug=next_project.slug) }}"><span>Next</span>{{ next_project.title }}</a>
+  </nav>
+</article>
 {% endblock %}

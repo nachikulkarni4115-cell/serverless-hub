@@ -1,48 +1,39 @@
-# Nachiket Kulkarni — Editorial Portfolio
+# Nachiket Kulkarni: portfolio
 
-A light, editorial-style Flask portfolio with lime accents, expressive motion, and six dedicated project-detail pages.
+Flask + Jinja portfolio. Plain CSS and JavaScript, no frontend build step.
 
 ## Run locally
 
 ```bash
 python -m venv .venv
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-# macOS/Linux:
-source .venv/bin/activate
-
+# Windows PowerShell:  .venv\Scripts\Activate.ps1
+# macOS/Linux:         source .venv/bin/activate
 pip install -r requirements.txt
-python app.py
+python app.py                      # http://127.0.0.1:5000  (FLASK_DEBUG=1 for debug mode)
+# or the production-style server:
+python -m gunicorn --bind 127.0.0.1:5000 app:app
+python scripts/smoke_test.py       # renders every page and checks links and assets
 ```
-
-Open http://127.0.0.1:5000.
 
 ## Routes
 
-- `/` — portfolio homepage
-- `/projects/project-management-rag`
-- `/projects/cloud-campus`
-- `/projects/face-recognition-attendance`
-- `/projects/voice-controlled-ai-agent`
-- `/projects/emotion-detection`
-- `/projects/milo-ai-study-partner`
+`/`, `/projects/<slug>` (six slugs, unchanged), `/healthz` (new, returns `{"status":"ok"}`), custom 404.
 
-## Before publishing
+## Editing content
 
-- Replace the placeholder email, GitHub, and LinkedIn links in `templates/base.html`.
-- Review every project description and ensure it matches your actual implementation.
-- Add verified technologies, screenshots, GitHub URLs, demo links, your contribution, and measured results where available.
-- Keep secrets and environment files out of Git.
-- Merge these files into your existing repository carefully. This package does not include or replace your existing CI/CD configuration, Dockerfile, Kubernetes manifests, or Jenkinsfile.
-- If your current pipeline expects a different app entry point or port, adapt the deployment configuration rather than overwriting it blindly.
+- Everything lives in `app.py`: `SITE`, `SKILLS`, `PROJECTS`, `EDUCATION`.
+- Project screenshots go in `static/images/projects/`; list them under a project's `images`. Missing files are skipped automatically.
+- Résumé: add `static/files/Nachiket_Kulkarni_Resume.pdf` and the résumé buttons appear on their own.
+- `emotion-detection` is credited to its author. Delete that dict from `PROJECTS` if you don't want it listed (also fine: nothing else references it).
 
+## Motion
 
-## Personal links
+- Headline words rise out of a mask on load; the pipeline line then draws across (CSS only).
+- A rotating stamp (wide screens only), a scrolling ticker (pauses on hover), scroll reveals, a cursor glow and a pointer spotlight on project rows.
+- `#bg-canvas` draws pipeline lanes with moving packets. Scrolling shifts the lanes at different depths and speeds the packets up; the pointer pulls nearby packets toward it. Plain JavaScript, no libraries. It pauses when the tab is hidden.
+- `prefers-reduced-motion` turns all of it off: content is shown in its final state and the canvas draws one still frame.
+- Copy for the ticker, bio and "What the projects taught me" lives in `TICKER`, `ABOUT` and `TAUGHT` in `app.py`. Extra project-page sections (who it's for, design targets, next steps) live in `PROJECT_EXTRAS`.
 
-- Email: `nachikulkarni4115@gmail.com`
-- GitHub: `https://github.com/nachikulkarni4115-cell`
-- LinkedIn: `https://www.linkedin.com/in/nachiket-kulkarni-636498299/`
+## Docker
 
-## Report images
-
-The project image directory is `static/images/projects/`. To add accurate screenshots, diagrams, or result images from your reports, provide the PDFs for the six projects. Images should be extracted from the matching report and placed on the corresponding project detail page; no unrelated stock visuals are used as substitutes.
+`Dockerfile` (your original, minimally changed) and `.dockerignore` are included. See `DEPLOY.md`.

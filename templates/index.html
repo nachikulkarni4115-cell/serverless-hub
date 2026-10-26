@@ -1,60 +1,164 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="hero section-wrap" id="top">
-  <div class="hero-meta reveal"><span class="eyebrow"><span class="eyebrow-line"></span> DEVELOPER · CLOUD · AI</span><span class="mono hero-location">PUNE, INDIA&nbsp; / &nbsp;2026</span></div>
-  <div class="hero-title-wrap">
-    <h1 class="hero-title reveal">I BUILD<br><span class="title-second">THINGS THAT</span><br><span class="title-last">THINK<span class="lime-dot">.</span></span></h1>
-    <div class="hero-stamp" aria-label="Curiosity in motion">
-      <svg viewBox="0 0 120 120" class="stamp-svg" aria-hidden="true"><defs><path id="circlePath" d="M60,60 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"/></defs><text><textPath href="#circlePath">CURIOUS BY DEFAULT · BUILDING IN PUBLIC · </textPath></text><circle cx="60" cy="60" r="22"/><path d="M48 62 L58 72 L76 48"/></svg>
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+
+    <div class="stamp" aria-hidden="true">
+      <svg viewBox="0 0 160 160" focusable="false">
+        <defs><path id="stamp-circle" d="M80,80 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0"/></defs>
+        <circle cx="80" cy="80" r="76" class="stamp-ring"/>
+        <circle cx="80" cy="80" r="40" class="stamp-ring"/>
+        <text class="stamp-text"><textPath href="#stamp-circle" startOffset="0">Cloud · Backend · AI · Deploy · Cloud · Backend · AI · Deploy ·</textPath></text>
+        <text x="80" y="89" text-anchor="middle" class="stamp-mark">NK</text>
+      </svg>
     </div>
+  <div class="wrap">
+    <p class="hero-kicker">Nachiket Kulkarni · Computer Science student · Pune</p>
+    <h1 class="hero-title" id="hero-title" aria-label="I build software, and the pipeline that ships it.">{% for word in "I build software, and the pipeline that ships it.".split() %}<span class="w" aria-hidden="true"><span style="--w: {{ loop.index0 }}">{{ word }}</span></span> {% endfor %}</h1>
+    <p class="hero-lead">I’m studying cloud computing at MIT-WPU. My team projects cover Flask and FastAPI backends, React interfaces and AI features, along with the Docker, Jenkins and Kubernetes tooling I use to deploy them.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">See my projects</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      {% if resume_url %}<a class="btn btn-text" href="{{ resume_url }}" target="_blank" rel="noopener">View résumé</a>{% endif %}
+    </div>
+
+    <figure class="release">
+      <ol class="release-line">
+        {% for stage in pipeline %}
+        <li style="--i: {{ loop.index0 }}">
+          <span class="release-step">{{ stage.step }}</span>
+          <span class="release-tool">{{ stage.tool }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+      <figcaption>The route this site takes to production.</figcaption>
+    </figure>
   </div>
-  <div class="hero-bottom">
-    <p class="hero-intro reveal">I'm Nachiket — a computer science student exploring the intersection of <strong>cloud infrastructure, intelligent software, and useful ideas.</strong></p>
-    <a class="round-link reveal" href="#work"><span>SCROLL TO<br>EXPLORE</span><b>↓</b></a>
-    <div class="hero-index mono reveal">PORTFOLIO<br>2026 — PRESENT</div>
-  </div>
-  <div class="hero-rule"><span></span></div>
 </section>
 
-<section class="ticker" aria-label="Areas of interest"><div class="ticker-track">
-  {% for i in range(2) %}<span>AI & MACHINE LEARNING <b>✳</b></span><span>CLOUD ENGINEERING <b>✳</b></span><span>BACKEND SYSTEMS <b>✳</b></span><span>BUILD / TEST / LEARN <b>✳</b></span>{% endfor %}
-</div></section>
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    {% for _ in range(2) %}<ul class="ticker-group">{% for item in ticker %}<li>{{ item }}</li>{% endfor %}</ul>{% endfor %}
+  </div>
+</div>
 
-<section class="work-section section-wrap" id="work">
-  <div class="section-heading reveal"><div><span class="eyebrow">01 / SELECTED WORK</span><h2>Curiosity,<br><em>in practice.</em></h2></div><p class="section-aside">Six projects. Different questions.<br>One ongoing learning curve.</p></div>
-  <div class="project-grid">
-    {% for project in projects %}
-    <a class="project-card reveal {{ project.accent }}" href="{{ url_for('project_detail', slug=project.slug) }}" style="--delay: {{ loop.index0 * 70 }}ms">
-      <div class="card-top"><span class="mono">{{ project.number }} / {{ project.category }}</span><span class="card-arrow">↗</span></div>
-      <div class="project-art art-{{ project.accent }}">
-        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
-        <div class="art-grid"></div><span class="art-mark">{{ project.mark }}</span>
-        <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">+</span>
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="wrap about-grid">
+    <div class="about-copy" data-reveal>
+      <h2 id="about-title" class="section-title">{{ about.title }}</h2>
+      {% for para in about.paragraphs %}<p>{{ para }}</p>{% endfor %}
+    </div>
+    <dl class="facts" data-reveal style="--d: 1">
+      <div><dt>Studying</dt><dd>B.Sc. Computer Science (Cloud Computing), MIT-WPU</dd></div>
+      <div><dt>Based in</dt><dd>{{ site.location }}</dd></div>
+      <div><dt>Works with</dt><dd>Python, Flask, Docker, Jenkins, Kubernetes, AWS</dd></div>
+      <div><dt>Projects</dt><dd>Five team projects, plus one related report</dd></div>
+      <div><dt>Status</dt><dd>Open to opportunities</dd></div>
+    </dl>
+  </div>
+  <div class="wrap taught">
+    <h3 class="taught-title" data-reveal>What the projects taught me</h3>
+    <ul class="taught-list">
+      {% for item in taught %}
+      <li data-reveal style="--d: {{ loop.index0 }}"><h4>{{ item.title }}</h4><p>{{ item.text }}</p></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<section class="section" id="skills" aria-labelledby="skills-title">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <h2 id="skills-title" class="section-title">Skills</h2>
+      <p class="section-intro">Grouped by what I use them for. Each group names the projects where I’ve used it.</p>
+    </div>
+    <div class="skill-list">
+      {% for group in skills %}
+      <article class="skill-group" data-reveal style="--d: {{ loop.index0 }}">
+        <div class="skill-meta">
+          <h3>{{ group.name }}</h3>
+          <p>{{ group.blurb }}</p>
+        </div>
+        <div class="skill-body">
+          <ul class="tags">{% for item in group['items'] %}<li>{{ item }}</li>{% endfor %}</ul>
+          <p class="skill-used">Used in {{ group.used_in }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects" aria-labelledby="projects-title">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <h2 id="projects-title" class="section-title">Selected projects</h2>
+      <p class="section-intro">Coursework projects built with classmates at MIT-WPU. Each page covers the stack, how it works and what the report says is still unfinished.</p>
+    </div>
+    <div class="project-list">
+      {% for project in projects %}
+      <article class="project" data-reveal style="--d: {{ loop.index0 }}">
+        <div class="project-text">
+          <p class="project-meta">{{ project.kind }} · {{ project.year }} · {{ project.team }}</p>
+          <h3><a class="project-link" href="{{ url_for('project_detail', slug=project.slug) }}">{{ project.title }}</a></h3>
+          <p class="project-short">{{ project.short }}</p>
+          {% if project.credit %}<p class="project-credit">{{ project.credit }}</p>{% endif %}
+          <ul class="tags tags-small">{% for tech in project.stack[:6] %}<li>{{ tech }}</li>{% endfor %}</ul>
+          <span class="project-cta" aria-hidden="true">Read the project</span>
+        </div>
+        <ol class="flow" aria-label="How {{ project.title }} works">
+          {% for step in project.flow %}
+          <li><strong>{{ step.label }}</strong><span>{{ step.detail }}</span></li>
+          {% endfor %}
+        </ol>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="education" aria-labelledby="education-title">
+  <div class="wrap education-grid" data-reveal>
+    <div>
+      <h2 id="education-title" class="section-title">Education</h2>
+      <p class="edu-degree">{{ education.degree }}</p>
+      <p class="edu-school">{{ education.school }}</p>
+    </div>
+    <ol class="timeline">
+      {% for stage in education.timeline %}
+      <li>
+        <p class="timeline-period">{{ stage.period }}</p>
+        <p class="timeline-stage">{{ stage.stage }}</p>
+        <ul>
+          {% for slug in stage.slugs %}
+          <li><a href="{{ url_for('project_detail', slug=slug) }}">{{ projects_by_slug[slug].title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<section class="section section-contact" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact-grid" data-reveal>
+    <div>
+      <h2 id="contact-title" class="contact-title">Have a role or a project in mind? Send me an email.</h2>
+      <p class="section-intro">I’m looking for opportunities where I can keep learning cloud and software engineering on real work. I read every message.</p>
+    </div>
+    <div class="contact-actions">
+      <a class="contact-email" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="mailto:{{ site.email }}?subject=Hello%20Nachiket">Email me</a>
+        <button class="btn btn-ghost" type="button" data-copy="{{ site.email }}">Copy address</button>
+        {% if resume_url %}<a class="btn btn-text" href="{{ resume_url }}" target="_blank" rel="noopener">View résumé</a>{% endif %}
       </div>
-      <div class="card-copy"><h3>{{ project.title }}</h3><p>{{ project.short }}</p></div>
-      <div class="card-bottom"><span>EXPLORE PROJECT</span><span class="card-bottom-arrow">↗</span></div>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-
-<section class="about-section" id="about">
-  <div class="section-wrap about-layout">
-    <div class="about-label reveal"><span class="eyebrow">02 / A LITTLE ABOUT ME</span><span class="about-big-number">✳</span></div>
-    <div class="about-content reveal"><h2>Learning by<br>making <em>real things.</em></h2>
-      <p class="about-lede">I like understanding how things work — then turning that understanding into something people can use.</p>
-      <p>My work spans AI-powered applications, cloud technologies, and backend systems. Each project is a chance to experiment, solve a concrete problem, and get better at building reliable software.</p>
-      <div class="skill-cloud"><span>PYTHON</span><span>FLASK</span><span>AWS</span><span>DOCKER</span><span>KUBERNETES</span><span>AI / ML</span><span>GIT & CI/CD</span></div>
+      <p class="copy-status" role="status" aria-live="polite"></p>
+      <ul class="social-list">
+        <li><a href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+      </ul>
     </div>
   </div>
-</section>
-
-<section class="contact-section section-wrap" id="contact">
-  <span class="eyebrow reveal">03 / WHAT'S NEXT?</span>
-  <div class="contact-layout"><h2 class="reveal">Have a good<br>problem? <em>Let's talk.</em></h2>
-  <div class="contact-right reveal"><p>I'm interested in opportunities where I can learn quickly, contribute thoughtfully, and build useful technology with a team.</p>
-    <a class="contact-link" href="mailto:nachikulkarni4115@gmail.com">NACHIKULKARNI4115@GMAIL.COM <span>↗</span></a>
-    <div class="social-links"><a href="https://github.com/nachikulkarni4115-cell" target="_blank" rel="noreferrer">GITHUB ↗</a><a href="https://www.linkedin.com/in/nachiket-kulkarni-636498299/" target="_blank" rel="noreferrer">LINKEDIN ↗</a></div>
-  </div></div>
 </section>
 {% endblock %}

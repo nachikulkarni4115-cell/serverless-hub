@@ -1,3 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Page not found — Nachiket Kulkarni{% endblock %}
-{% block content %}<section class="not-found section-wrap"><span class="eyebrow">404 / WRONG TURN</span><h1>Nothing<br><em>here.</em></h1><a class="pill-link" href="{{ url_for('home') }}">BACK TO HOME ↗</a></section>{% endblock %}
+{% block title %}Page not found | Nachiket Kulkarni{% endblock %}
+{% block content %}
+<section class="not-found">
+  <div class="wrap">
+    <h1 class="detail-title">That page doesn’t exist.</h1>
+    <p class="detail-deck">The link may be mistyped or the project may have moved. Head back to the homepage or jump to the projects.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('home') }}">Go to the homepage</a>
+      <a class="btn btn-ghost" href="{{ url_for('home') }}#projects">Browse projects</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+# Version control and editor files
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+
+# Python environments and caches
+.venv
+venv
+env
+__pycache__
+*.py[cod]
+.pytest_cache
+.mypy_cache
+
+# Secrets and local config
+.env
+.env.*
+
+# Not needed at runtime
+scripts
+tests
+docs
+*.md
+*.zip
+Jenkinsfile
+Dockerfile*
+docker-compose*.yml
+k8s
+kubernetes
+.DS_Store
+Thumbs.db

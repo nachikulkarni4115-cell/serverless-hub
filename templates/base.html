@@ -2,36 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script>document.documentElement.classList.add("js");</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f5f5ef">
-  <meta name="description" content="Nachiket Kulkarni — developer portfolio across AI, cloud, and software projects.">
-  <title>{% block title %}Nachiket Kulkarni — Developer & Builder{% endblock %}</title>
+  <meta name="theme-color" content="#0b1620">
+  <title>{% block title %}Nachiket Kulkarni | Software, cloud and AI projects{% endblock %}</title>
+  <meta name="description" content="{% block description %}Nachiket Kulkarni is a Computer Science student at MIT-WPU, Pune, building Flask, FastAPI and React projects and deploying them with Docker, Jenkins and Kubernetes.{% endblock %}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
+  <canvas id="bg-canvas" class="bg-canvas" aria-hidden="true"></canvas>
   <div class="cursor-glow" aria-hidden="true"></div>
-  <header class="site-header">
-    <a class="wordmark" href="{{ url_for('home') }}" aria-label="Nachiket Kulkarni home">
-      <span class="wordmark-mark">N<span>.</span></span>
-      <span class="wordmark-name">NACHIKET<br>KULKARNI</span>
-    </a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="{{ url_for('home') }}#work">Work <span>↘</span></a>
-      <a href="{{ url_for('home') }}#about">About</a>
-      <a href="{{ url_for('home') }}#contact">Contact <span>↗</span></a>
-    </nav>
-    <a class="availability" href="{{ url_for('home') }}#contact"><span class="status-dot"></span> OPEN TO OPPORTUNITIES</a>
-    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a class="brand" href="{{ url_for('home') }}" aria-label="{{ site.name }}, home">
+        <span class="brand-mark" aria-hidden="true">NK</span>
+        <span class="brand-name">{{ site.name }}</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="menu-label">Menu</span>
+        <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Primary">
+        <ul>
+          <li><a href="{{ url_for('home') }}#about" data-section="about">About</a></li>
+          <li><a href="{{ url_for('home') }}#skills" data-section="skills">Skills</a></li>
+          <li><a href="{{ url_for('home') }}#projects" data-section="projects">Projects</a></li>
+          <li><a href="{{ url_for('home') }}#contact" data-section="contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
-  <main>{% block content %}{% endblock %}</main>
+
+  <main id="main">{% block content %}{% endblock %}</main>
+
   <footer class="site-footer">
-    <a class="footer-signature" href="{{ url_for('home') }}">NK<span>✳</span></a>
-    <p>DESIGNED WITH INTENTION. BUILT WITH CURIOSITY.</p>
-    <a href="#top">BACK TO TOP ↑</a>
+    <div class="footer-inner">
+      <div class="footer-id">
+        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark" aria-hidden="true">NK</span><span class="brand-name">{{ site.name }}</span></a>
+        <p>Computer Science student, Pune. Built with Flask and deployed with Docker, Jenkins and Kubernetes.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="{{ url_for('home') }}#about">About</a>
+        <a href="{{ url_for('home') }}#skills">Skills</a>
+        <a href="{{ url_for('home') }}#projects">Projects</a>
+        <a href="{{ url_for('home') }}#education">Education</a>
+        <a href="{{ url_for('home') }}#contact">Contact</a>
+      </nav>
+      <div class="footer-social">
+        <a href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:{{ site.email }}">Email</a>
+      </div>
+    </div>
+    <p class="footer-legal">© {{ current_year }} {{ site.name }}</p>
   </footer>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ asset('js/main.js') }}" defer></script>
 </body>
 </html>
