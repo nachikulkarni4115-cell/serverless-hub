@@ -10,6 +10,16 @@
       <h1 class="detail-title">{{ project.title }}</h1>
       <p class="detail-deck">{{ project.short }}</p>
       {% if project.credit %}<p class="project-credit">{{ project.credit }}</p>{% endif %}
+      {% if project.demo or project.repo %}
+      <p class="project-links">
+        {% if project.demo %}
+        <a class="btn btn-primary" href="{{ project.demo }}" target="_blank" rel="noopener noreferrer">Watch demos</a>
+        {% endif %}
+        {% if project.repo %}
+        <a class="btn btn-ghost" href="{{ project.repo }}" target="_blank" rel="noopener noreferrer">View code</a>
+        {% endif %}
+      </p>
+      {% endif %}
     </div>
   </header>
 

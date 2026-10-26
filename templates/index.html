@@ -109,6 +109,11 @@
     <div class="section-head" data-reveal>
       <h2 id="projects-title" class="section-title">Selected projects</h2>
       <p class="section-intro">Coursework projects built with classmates at MIT-WPU. Each page covers the stack, how it works and what the report says is still unfinished.</p>
+      {% if site.demos %}
+      <p class="section-demos">
+        <a class="btn btn-ghost" href="{{ site.demos }}" target="_blank" rel="noopener noreferrer">Watch project demos</a>
+      </p>
+      {% endif %}
     </div>
     <div class="project-list">
       {% for project in projects %}
@@ -172,6 +177,7 @@
       <ul class="social-list">
         <li><a href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
         <li><a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        {% if site.demos %}<li><a href="{{ site.demos }}" target="_blank" rel="noopener noreferrer">Project demos</a></li>{% endif %}
       </ul>
     </div>
   </div>

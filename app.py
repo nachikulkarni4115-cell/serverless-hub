@@ -23,7 +23,10 @@ SITE = {
     # Drop a PDF at static/files/Nachiket_Kulkarni_Resume.pdf and the resume
     # buttons appear automatically. Until then they are hidden.
     "resume_file": "files/Nachiket_Kulkarni_Resume.pdf",
+    # Paste your Google Drive link for project demos (Anyone with the link → Viewer)
+    "demos": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
 }
+
 
 PIPELINE = [
     {"step": "Push", "tool": "GitHub"},
@@ -74,6 +77,8 @@ PROJECTS = [
         "year": "2025–26",
         "term": "TYBScCS, semester 6",
         "team": "Team of 4",
+        "demo": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
+        "repo": None,   # GitHub repo URL
         "short": "A self-hostable project tracker that answers questions about your own tickets and comments.",
         "summary": "A project management platform that turns every project, ticket and comment into searchable meaning. Ask a question in plain language and a local language model answers from your project data instead of guessing.",
         "problem": "Tools like Jira and Trello store tickets well but search them by keyword, so a decision or bug fix is easy to lose unless you remember the exact words used. As a project grows, past work gets buried and teams repeat effort.",
@@ -112,6 +117,8 @@ PROJECTS = [
         "year": "2025–26",
         "term": "TYBScCS, semester 6",
         "team": "Team of 3",
+        "demo": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
+        "repo": None,   # GitHub repo URL
         "short": "A study companion with an AI chat, a study-plan generator and task tracking.",
         "summary": "Milo brings AI help and study planning into one place. Ask an academic question, generate a day-by-day plan for an exam, and keep study tasks organised without switching between apps.",
         "problem": "Students juggle planners, note apps and separate AI tools, and most planners cannot explain a concept or respond to what you ask.",
@@ -149,6 +156,8 @@ PROJECTS = [
         "year": "2025–26",
         "term": "TYBScCS, semester 5",
         "team": "Team of 4",
+        "demo": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
+        "repo": None,   # GitHub repo URL
         "short": "A study-notes platform where students upload, find and download course material.",
         "summary": "Cloud Campus is a Flask web app that replaces scattered chat groups and drive links with one searchable library of study notes. Students sign up, upload files tagged by subject, and browse what others have shared.",
         "problem": "Notes circulate through chat groups and personal drives, where links expire, files get buried and seniors’ material is rarely kept for the next batch. Finding reliable notes before exams means asking around.",
@@ -181,6 +190,8 @@ PROJECTS = [
         "year": "2025–26",
         "term": "TYBScCS, semester 5",
         "team": "Team of 6",
+        "demo": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
+        "repo": None,   # GitHub repo URL
         "short": "A webcam attendance prototype that recognises a student’s face and records the visit.",
         "summary": "Students stand in front of a webcam and are identified from their face, so attendance is marked without sign-in sheets or ID cards. The recognised student’s record is updated in the cloud and shown on screen.",
         "problem": "Manual roll calls take class time, invite proxy attendance and are easy to record wrongly. The project explores a contactless alternative.",
@@ -213,6 +224,8 @@ PROJECTS = [
         "year": "2024–25",
         "term": "SYBScCS, project based learning",
         "team": "Team of 4",
+        "demo": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
+        "repo": None,   # GitHub repo URL
         "short": "A real-time voice assistant that listens, thinks with an LLM and answers out loud.",
         "summary": "A voice agent you talk to through a browser. It converts speech to text, passes it to a large language model, can call tools such as a weather lookup, and speaks the reply.",
         "problem": "Typing is not always the quickest way to ask an assistant for something, and mainstream assistants run in closed ecosystems that limit customisation.",
@@ -246,6 +259,8 @@ PROJECTS = [
         "year": "2024–25",
         "term": "SYBScCS, project based learning",
         "team": "Individual report",
+        "demo": "https://drive.google.com/drive/folders/1JsLxu-YLe5j23Ee22BG6pX4UsjlgdOO6",
+        "repo": None,   # GitHub repo URL
         "credit": "Written and submitted by Razi Kauchali as an individual project report. Included here as related coursework, not as my own contribution.",
         "short": "A computer-vision script that finds a face in an image or webcam frame and labels the dominant emotion.",
         "summary": "A short pipeline that detects faces in an image or live webcam feed and writes the dominant emotion, such as happy or sad, onto the output.",
