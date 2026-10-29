@@ -67,7 +67,7 @@
       <div><dt>Studying</dt><dd>B.Sc. Computer Science (Cloud Computing), MIT-WPU</dd></div>
       <div><dt>Based in</dt><dd>{{ site.location }}</dd></div>
       <div><dt>Works with</dt><dd>Python, Flask, Docker, Jenkins, Kubernetes, AWS</dd></div>
-      <div><dt>Projects</dt><dd>Five team projects, plus one related report</dd></div>
+      <div><dt>Projects</dt><dd>Two live products, five team projects and one related report</dd></div>
       <div><dt>Status</dt><dd>Open to opportunities</dd></div>
     </dl>
   </div>
@@ -108,31 +108,43 @@
   <div class="wrap">
     <div class="section-head" data-reveal>
       <h2 id="projects-title" class="section-title">Selected projects</h2>
-      <p class="section-intro">Coursework projects built with classmates at MIT-WPU. Each page covers the stack, how it works and what the report says is still unfinished.</p>
+      <p class="section-intro">Two products running live on their own subdomains, followed by coursework projects built with classmates at MIT-WPU.</p>
       {% if site.demos %}
       <p class="section-demos">
         <a class="btn btn-ghost" href="{{ site.demos }}" target="_blank" rel="noopener noreferrer">Watch project demos</a>
       </p>
       {% endif %}
     </div>
-    <div class="project-list">
-      {% for project in projects %}
-      <article class="project" data-reveal style="--d: {{ loop.index0 }}">
+    {% macro project_card(project, idx) %}
+      <article class="project" data-reveal style="--d: {{ idx }}">
         <div class="project-text">
-          <p class="project-meta">{{ project.kind }} · {{ project.year }} · {{ project.team }}</p>
+          <p class="project-meta">{% if project.live %}<span class="badge-live">Live</span>{% endif %}{{ [project.kind, project.year, project.team] | select | join(' · ') }}</p>
           <h3><a class="project-link" href="{{ url_for('project_detail', slug=project.slug) }}">{{ project.title }}</a></h3>
           <p class="project-short">{{ project.short }}</p>
           {% if project.credit %}<p class="project-credit">{{ project.credit }}</p>{% endif %}
-          <ul class="tags tags-small">{% for tech in project.stack[:6] %}<li>{{ tech }}</li>{% endfor %}</ul>
+          {% if project.stack %}<ul class="tags tags-small">{% for tech in project.stack[:6] %}<li>{{ tech }}</li>{% endfor %}</ul>{% endif %}
+          {% if project.live %}<a class="project-live" href="{{ project.live }}" target="_blank" rel="noopener noreferrer">{{ project.live_host }} <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>{% endif %}
           <span class="project-cta" aria-hidden="true">Read the project</span>
         </div>
+        {% if project.flow %}
         <ol class="flow" aria-label="How {{ project.title }} works">
           {% for step in project.flow %}
           <li><strong>{{ step.label }}</strong><span>{{ step.detail }}</span></li>
           {% endfor %}
         </ol>
+        {% endif %}
       </article>
-      {% endfor %}
+    {% endmacro %}
+
+    <h3 class="project-group-title" data-reveal>Live products</h3>
+    <div class="project-list">
+      {% for project in projects if project.live %}{{ project_card(project, loop.index0) }}{% endfor %}
+    </div>
+    <p class="section-demos"><a class="btn btn-ghost" href="{{ url_for('live_projects') }}">See all live projects</a></p>
+
+    <h3 class="project-group-title" data-reveal>Coursework projects</h3>
+    <div class="project-list">
+      {% for project in projects if not project.live %}{{ project_card(project, loop.index0) }}{% endfor %}
     </div>
   </div>
 </section>

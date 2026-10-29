@@ -5,15 +5,18 @@
 <article class="detail">
   <header class="detail-hero">
     <div class="wrap">
-      <a class="back-link" href="{{ url_for('home') }}#projects">All projects</a>
-      <p class="project-meta">{{ project.kind }} · {{ project.year }} · {{ project.team }}</p>
+      {% if project.live %}<a class="back-link" href="{{ url_for('live_projects') }}">Live projects</a>{% else %}<a class="back-link" href="{{ url_for('home') }}#projects">All projects</a>{% endif %}
+      <p class="project-meta">{% if project.live %}<span class="badge-live">Live</span>{% endif %}{{ [project.kind, project.year, project.team] | select | join(' · ') }}</p>
       <h1 class="detail-title">{{ project.title }}</h1>
       <p class="detail-deck">{{ project.short }}</p>
       {% if project.credit %}<p class="project-credit">{{ project.credit }}</p>{% endif %}
-      {% if project.demo or project.repo %}
+      {% if project.live or project.demo or project.repo %}
       <p class="project-links">
+        {% if project.live %}
+        <a class="btn btn-primary" href="{{ project.live }}" target="_blank" rel="noopener noreferrer">Open live site <span aria-hidden="true">↗</span></a>
+        {% endif %}
         {% if project.demo %}
-        <a class="btn btn-primary" href="{{ project.demo }}" target="_blank" rel="noopener noreferrer">Watch demos</a>
+        <a class="btn {{ 'btn-ghost' if project.live else 'btn-primary' }}" href="{{ project.demo }}" target="_blank" rel="noopener noreferrer">Watch demos</a>
         {% endif %}
         {% if project.repo %}
         <a class="btn btn-ghost" href="{{ project.repo }}" target="_blank" rel="noopener noreferrer">View code</a>
@@ -41,10 +44,12 @@
         <p class="detail-lede">{{ project.summary }}</p>
       </section>
 
+      {% if project.problem %}
       <section class="detail-block" id="problem">
         <h2>The problem</h2>
         <p>{{ project.problem }}</p>
       </section>
+      {% endif %}
 
       {% if project.audience %}
       <section class="detail-block" id="audience">
@@ -53,25 +58,33 @@
       </section>
       {% endif %}
 
+      {% if project.how or project.flow %}
       <section class="detail-block" id="how">
         <h2>How it works</h2>
+        {% if project.flow %}
         <ol class="flow flow-row" aria-label="How {{ project.title }} works">
           {% for step in project.flow %}
           <li><strong>{{ step.label }}</strong><span>{{ step.detail }}</span></li>
           {% endfor %}
         </ol>
-        <p>{{ project.how }}</p>
+        {% endif %}
+        {% if project.how %}<p>{{ project.how }}</p>{% endif %}
       </section>
+      {% endif %}
 
+      {% if project.features %}
       <section class="detail-block" id="features">
         <h2>What it does</h2>
         <ul class="check-list">{% for feature in project.features %}<li>{{ feature }}</li>{% endfor %}</ul>
       </section>
+      {% endif %}
 
+      {% if project.stack %}
       <section class="detail-block" id="stack">
         <h2>Built with</h2>
         <ul class="tags">{% for tech in project.stack %}<li>{{ tech }}</li>{% endfor %}</ul>
       </section>
+      {% endif %}
 
       {% if project.targets %}
       <section class="detail-block" id="targets">
@@ -83,7 +96,7 @@
 
       {% if project.limits %}
       <section class="detail-block" id="limits">
-        <h2>Limitations the report lists</h2>
+        <h2>{{ 'Known limitations' if project.live else 'Limitations the report lists' }}</h2>
         <ul class="plain-list">{% for item in project.limits %}<li>{{ item }}</li>{% endfor %}</ul>
       </section>
       {% endif %}
@@ -91,7 +104,7 @@
       {% if project.next_steps %}
       <section class="detail-block" id="next">
         <h2>Where it could go next</h2>
-        <p>Based on the limitations and gaps the report lists.</p>
+        {% if not project.live %}<p>Based on the limitations and gaps the report lists.</p>{% endif %}
         <ul class="check-list">{% for item in project.next_steps %}<li>{{ item }}</li>{% endfor %}</ul>
       </section>
       {% endif %}
@@ -102,21 +115,22 @@
         <p class="side-label">On this page</p>
         <ul>
           <li><a href="#overview">Overview</a></li>
-          <li><a href="#problem">The problem</a></li>
+          {% if project.problem %}<li><a href="#problem">The problem</a></li>{% endif %}
           {% if project.audience %}<li><a href="#audience">Who it’s for</a></li>{% endif %}
-          <li><a href="#how">How it works</a></li>
-          <li><a href="#features">What it does</a></li>
-          <li><a href="#stack">Built with</a></li>
+          {% if project.how or project.flow %}<li><a href="#how">How it works</a></li>{% endif %}
+          {% if project.features %}<li><a href="#features">What it does</a></li>{% endif %}
+          {% if project.stack %}<li><a href="#stack">Built with</a></li>{% endif %}
           {% if project.targets %}<li><a href="#targets">Design targets</a></li>{% endif %}
           {% if project.limits %}<li><a href="#limits">Limitations</a></li>{% endif %}
           {% if project.next_steps %}<li><a href="#next">Where it could go next</a></li>{% endif %}
         </ul>
       </nav>
       <dl class="facts facts-compact">
-        <div><dt>Context</dt><dd>{{ project.term }}</dd></div>
-        <div><dt>Year</dt><dd>{{ project.year }}</dd></div>
-        <div><dt>Team</dt><dd>{{ project.team }}</dd></div>
-        <div><dt>Institution</dt><dd>MIT World Peace University, Pune</dd></div>
+        {% if project.live %}<div><dt>Live at</dt><dd><a href="{{ project.live }}" target="_blank" rel="noopener noreferrer">{{ project.live_host }}</a></dd></div>{% endif %}
+        {% if project.term %}<div><dt>Context</dt><dd>{{ project.term }}</dd></div>{% endif %}
+        {% if project.year %}<div><dt>Year</dt><dd>{{ project.year }}</dd></div>{% endif %}
+        {% if project.team %}<div><dt>Team</dt><dd>{{ project.team }}</dd></div>{% endif %}
+        {% if not project.live %}<div><dt>Institution</dt><dd>MIT World Peace University, Pune</dd></div>{% endif %}
       </dl>
       <p class="side-label">Next project</p>
       <a class="side-next" href="{{ url_for('project_detail', slug=next_project.slug) }}">{{ next_project.title }}</a>

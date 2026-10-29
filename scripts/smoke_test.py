@@ -41,7 +41,7 @@ def check(condition, message):
 
 
 client = app.test_client()
-pages = ["/", "/healthz"] + [f"/projects/{p['slug']}" for p in PROJECTS]
+pages = ["/", "/live", "/healthz"] + [f"/projects/{p['slug']}" for p in PROJECTS]
 checked_assets = set()
 
 for path in pages:
@@ -85,6 +85,19 @@ check(home_html.count("data-reveal") >= 10, "homepage has scroll-reveal hooks")
 detail_html = client.get("/projects/voice-controlled-ai-agent").get_data(as_text=True)
 check('class="toc"' in detail_html and 'id="targets"' in detail_html and 'id="next"' in detail_html,
       "project page has 'On this page', design targets and next steps")
+
+for host in ("agrisakha.nachiketkulkarni.in", "maintenance.nachiketkulkarni.in"):
+    check(f"https://{host}" in home_html, f"homepage links to live site {host}")
+live_html = client.get("/live").get_data(as_text=True)
+check("Live projects" in live_html and live_html.count("Open ") >= 2, "/live lists both live projects with open buttons")
+check("/live" in home_html, "homepage navigation links to the Live projects page")
+for slug in ("agrisakha", "industrial-maintenance-dashboard"):
+    page = client.get(f"/projects/{slug}").get_data(as_text=True)
+    check('id="how"' in page and 'id="features"' in page and 'id="limits"' in page and "Known limitations" in page,
+          f"/projects/{slug} has how it works, features and known limitations")
+for slug in ("agrisakha", "industrial-maintenance-dashboard"):
+    page = client.get(f"/projects/{slug}").get_data(as_text=True)
+    check("Open live site" in page, f"/projects/{slug} has an 'Open live site' button")
 
 for p in PROJECTS:
     for img in p["images"]:

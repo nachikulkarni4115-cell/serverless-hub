@@ -40,7 +40,7 @@ SKILLS = [
         "name": "Backend",
         "blurb": "Server-side code behind most of my projects.",
         "items": ["Python", "Flask", "FastAPI", "Node.js", "Express", "SQLAlchemy", "Pydantic"],
-        "used_in": "Cloud Campus, Milo, project management system",
+        "used_in": "Cloud Campus, Milo, project management system, Agrisakha, maintenance dashboard",
     },
     {
         "name": "Frontend",
@@ -52,24 +52,119 @@ SKILLS = [
         "name": "Cloud and DevOps",
         "blurb": "Getting an app packaged, tested and running somewhere real.",
         "items": ["AWS EC2", "AWS S3", "Docker", "Docker Compose", "Jenkins", "Kubernetes", "Git and GitHub", "Gunicorn", "Render", "Vercel"],
-        "used_in": "This portfolio, Cloud Campus, Milo",
+        "used_in": "This portfolio, Cloud Campus, Milo, maintenance dashboard, Agrisakha",
     },
     {
         "name": "Data stores",
         "blurb": "Where application and AI data lives.",
-        "items": ["PostgreSQL", "pgvector", "Supabase", "Firebase Realtime Database"],
-        "used_in": "Project management system, Milo, attendance system",
+        "items": ["PostgreSQL", "pgvector", "SQLite", "Supabase", "Firebase Realtime Database"],
+        "used_in": "Project management system, Milo, attendance system, maintenance dashboard",
     },
     {
         "name": "AI and computer vision",
         "blurb": "Language models, speech and vision libraries used in coursework.",
-        "items": ["Retrieval-augmented generation", "Ollama", "Groq API", "Gemini", "LiveKit", "Google speech APIs", "OpenCV", "face_recognition", "DeepFace"],
-        "used_in": "Voice agent, attendance system, emotion detection, Milo",
+        "items": ["Retrieval-augmented generation", "Ollama", "Groq API", "Gemini", "LiveKit", "Google speech APIs", "OpenCV", "face_recognition", "DeepFace", "TensorFlow", "Keras", "MobileNetV2"],
+        "used_in": "Voice agent, attendance system, emotion detection, Milo, Agrisakha",
     },
 ]
 
 # Order here is the order shown on the homepage. Slugs are the public URLs.
 PROJECTS = [
+    {
+        "slug": "agrisakha",
+        "title": "Agrisakha",
+        "kind": "AI, web app",
+        "year": None,
+        "term": None,
+        "team": None,
+        "live": "https://agrisakha.nachiketkulkarni.in",
+        "live_host": "agrisakha.nachiketkulkarni.in",
+        "live_note": "Choose a language, then take or upload a photo of a single leaf.",
+        "demo": None,
+        "repo": "https://github.com/nachikulkarni4115-cell/Agri-sakha",
+        "short": "A crop-leaf health assistant: upload a photo and get the likely condition, a confidence score and what to do next, in English, Hindi or Marathi.",
+        "summary": "Agrisakha reads a photo of a crop leaf and says what it most likely shows: a disease, a pest problem, a nutrient deficiency or a healthy leaf. It covers eight crops and 24 conditions, answers in English, Hindi or Marathi, and shows a confidence score and a heatmap of the parts of the leaf the model paid attention to.",
+        "problem": "Many leaf diseases look alike by eye, and a farmer often has to decide what to do before an expert can look at the crop. Agrisakha gives a quick first-level reading from a phone photo, in the language the farmer uses, along with symptoms, prevention tips and what to check next.",
+        "audience": "Farmers who want a quick first check of a leaf, in English, Hindi or Marathi, before asking an agricultural expert.",
+        "how": "The browser resizes and compresses the photo, then sends it to a Flask endpoint. The server checks that the file is a real JPG, PNG or WEBP image, corrects its phone rotation, resizes it to 224 by 224 pixels and scales the pixels the way the model expects. A MobileNetV2 model built with TensorFlow and Keras scores the photo against 24 classes. If the best score is below a 60% confidence threshold, the app does not name a disease and asks for a better photo. Otherwise it returns the top three candidates, plus symptoms, prevention tips and next steps in the chosen language. An occlusion heatmap, made by hiding patches of the leaf and measuring how much the score drops, shows which regions drove the result. Photos are processed in memory and never written to disk.",
+        "flow": [
+            {"label": "Phone or browser", "detail": "Photo taken or picked, then resized and compressed"},
+            {"label": "Flask /predict", "detail": "Checks the image, fixes rotation, resizes to 224×224"},
+            {"label": "MobileNetV2", "detail": "TensorFlow and Keras model scores 24 classes"},
+            {"label": "Result in your language", "detail": "Top three matches, confidence, advice and heatmap"},
+        ],
+        "features": [
+            "Take a photo or pick one from the gallery",
+            "24 classes across eight crops: rice, maize, soyabean, wheat, groundnut, potato, tomato and cotton, including healthy leaves",
+            "English, Hindi and Marathi, switchable from the navigation bar",
+            "Confidence score with the top three candidate conditions",
+            "Declines to guess below a confidence threshold and asks for a better photo",
+            "Symptoms, prevention and next steps for each condition",
+            "Heatmap showing which parts of the leaf influenced the result",
+            "Light and dark themes",
+        ],
+        "stack": ["Python", "Flask", "TensorFlow", "Keras", "MobileNetV2", "Gunicorn", "Docker", "Pillow", "NumPy", "JavaScript"],
+        "limits": [
+            "Every result is a first-level assessment from one photo and does not replace an agricultural expert; the app says so on each result",
+            "It only knows the 24 classes it was trained on, so a leaf outside them is matched to the nearest class or flagged as uncertain",
+            "The heatmap adds about 50 extra model passes per photo, so it can be switched off on small servers",
+            "The container runs one Gunicorn worker with two threads, which suits a small number of users at a time",
+        ],
+        "next_steps": [
+            "Add more crops and conditions",
+            "Publish the model’s measured accuracy for each class",
+        ],
+        "images": [],
+    },
+    {
+        "slug": "industrial-maintenance-dashboard",
+        "title": "Industrial Maintenance Dashboard",
+        "kind": "Cloud, full-stack",
+        "year": None,
+        "term": None,
+        "team": None,
+        "live": "https://maintenance.nachiketkulkarni.in",
+        "live_host": "maintenance.nachiketkulkarni.in",
+        "live_note": "Most of the dashboard sits behind a sign-in. The project page explains what is inside.",
+        "demo": None,
+        "repo": "https://github.com/nachikulkarni4115-cell/industrial-maintenance-dashboard",
+        "short": "A maintenance dashboard for industrial equipment: live telemetry, threshold alerts and work orders, with separate data for each facility.",
+        "summary": "A web dashboard where maintenance teams track equipment, watch live telemetry, respond to alerts and manage work orders. Readings arrive through an authenticated API, the dashboard refreshes every five seconds without reloading, and each facility sees only its own equipment.",
+        "problem": "Equipment readings, alerts and repair jobs can end up in separate tools, so a rising temperature or vibration reading is easy to miss and hard to tie to the job that fixes it. This project keeps them in one workflow: a reading crosses a threshold, an alert is raised, a technician acknowledges it and a work order tracks the repair.",
+        "audience": "Maintenance managers, technicians and read-only viewers at one or more industrial sites.",
+        "how": "Readings for temperature, vibration, pressure, rpm and current are posted as JSON to /api/v1/telemetry with a bearer token. The server validates every value, rejects NaN, infinity and out-of-range numbers, and uses an idempotency key so a retried reading is never stored twice. Each reading is checked against warning and critical thresholds for temperature, vibration, pressure and current. A breach opens an alert, and a later critical reading escalates an open warning. Technicians acknowledge and resolve alerts, and managers open work orders against equipment. The dashboard polls a no-cache JSON endpoint every five seconds to update the readings table and the headline counts. Every query is filtered by facility, and important actions are written to an audit log. A Jenkins pipeline runs the tests, builds and pushes the Docker image and updates the Kubernetes deployment.",
+        "flow": [
+            {"label": "Telemetry source", "detail": "A simulator posts readings with a bearer token; an Azure IoT Hub bridge is included for the same API"},
+            {"label": "Flask API", "detail": "Validates readings, drops duplicates and raises threshold alerts"},
+            {"label": "SQLAlchemy and SQLite", "detail": "Equipment, readings, alerts, work orders and an audit log on a persistent volume"},
+            {"label": "Dashboard", "detail": "Refreshes every five seconds, with role-based pages for each facility"},
+        ],
+        "features": [
+            "Sign-in with four roles: admin, maintenance manager, technician and viewer",
+            "Separate data for each facility, with tests that one facility cannot see another’s equipment",
+            "Equipment register with type, criticality, status and manufacturer",
+            "Live telemetry that refreshes every five seconds without a page reload",
+            "Warning and critical alerts that can be acknowledged and resolved with notes",
+            "Work orders with priority, assignee, due date and status",
+            "Audit log of important actions",
+            "Token-protected, idempotent ingestion API with strict input validation",
+            "Health and readiness endpoints for Kubernetes",
+        ],
+        "stack": ["Python", "Flask", "SQLAlchemy", "SQLite", "Docker", "Kubernetes", "Jenkins", "Gunicorn", "Flask-Login", "pytest", "Azure IoT Hub"],
+        "limits": [
+            "Readings on the live site come from a simulator, not from physical sensors",
+            "Alert thresholds are example values; real limits depend on the equipment and its manufacturer",
+            "rpm is stored but is not yet checked against thresholds",
+            "SQLite on a single persistent volume means the dashboard runs as one replica",
+            "The Azure IoT Hub bridge is packaged as a separate service template for review",
+        ],
+        "next_steps": [
+            "Move to a shared database so the dashboard can run more than one replica",
+            "Feed real sensor data through the Azure IoT Hub bridge",
+            "Set alert thresholds per equipment type",
+        ],
+        "images": [],
+    },
     {
         "slug": "project-management-rag",
         "title": "Project Management System with RAG",
@@ -317,6 +412,7 @@ ABOUT = {
         "I’m studying B.Sc. Computer Science with a Cloud Computing specialisation at MIT World Peace University in Pune. Most of what I’ve built has been team work for coursework, and the projects on this site are the clearest record of how that work has developed.",
         "It started in second year with a voice-controlled AI agent: a team project on LiveKit that chained speech recognition, a language model and speech synthesis into one real-time pipeline. Its limits (background noise, accents, a robotic voice) taught as much as its features did.",
         "Third year brought four projects across two semesters. In semester 5: Cloud Campus, a Flask study-notes platform that keeps its files in AWS S3, and a webcam attendance system built on OpenCV and Firebase. In semester 6: a project tracker with retrieval-augmented search on PostgreSQL and pgvector, and Milo, an AI study partner built with React, FastAPI and Groq.",
+        "Two more projects now run live on their own subdomains of this site: Agrisakha, a crop-leaf health assistant in English, Hindi and Marathi, and an industrial maintenance dashboard with live telemetry, alerts and work orders.",
         "Python is the thread through most of them. I enjoy the part after the code works: containers, CI/CD and getting an app running somewhere real. This portfolio is one example. It’s a Flask app that ships through Jenkins and Docker Hub to Kubernetes on AWS EC2.",
     ],
 }
@@ -442,6 +538,14 @@ def home():
         about=ABOUT,
         taught=TAUGHT,
         ticker=TICKER,
+    )
+
+
+@app.route("/live")
+def live_projects():
+    return render_template(
+        "live.html",
+        live=[p for p in PROJECTS if p.get("live")],
     )
 
 

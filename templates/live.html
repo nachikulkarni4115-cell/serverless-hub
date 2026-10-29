@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Live projects | Nachiket Kulkarni{% endblock %}
+{% block description %}Two products by Nachiket Kulkarni running live on their own subdomains: Agrisakha, a crop-leaf health assistant, and an industrial maintenance dashboard.{% endblock %}
+{% block content %}
+<section class="detail-hero">
+  <div class="wrap">
+    <a class="back-link" href="{{ url_for('home') }}">Home</a>
+    <p class="project-meta"><span class="badge-live">Live</span>Running now</p>
+    <h1 class="detail-title">Live projects</h1>
+    <p class="detail-deck">Two products running on their own subdomains. Open them and try them, or read how each one is built.</p>
+  </div>
+</section>
+
+<section class="section live-section" aria-label="Live projects">
+  <div class="wrap">
+    <div class="live-list">
+      {% for project in live %}
+      <article class="live-card" data-reveal style="--d: {{ loop.index0 }}">
+        <div class="live-main">
+          <p class="project-meta"><span class="badge-live">Live</span>{{ project.kind }}</p>
+          <h2 class="live-title">{{ project.title }}</h2>
+          <p class="project-short">{{ project.short }}</p>
+          <p class="live-summary">{{ project.summary }}</p>
+          {% if project.live_note %}<p class="live-note">{{ project.live_note }}</p>{% endif %}
+          <p class="project-links">
+            <a class="btn btn-primary" href="{{ project.live }}" target="_blank" rel="noopener noreferrer">Open {{ project.live_host }} <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>
+            <a class="btn btn-ghost" href="{{ url_for('project_detail', slug=project.slug) }}">Read the project</a>
+            {% if project.repo %}<a class="btn btn-text" href="{{ project.repo }}" target="_blank" rel="noopener noreferrer">View code</a>{% endif %}
+          </p>
+        </div>
+        <div class="live-side">
+          <p class="side-label">What it does</p>
+          <ul class="check-list">{% for feature in project.features[:4] %}<li>{{ feature }}</li>{% endfor %}</ul>
+          <p class="side-label">Built with</p>
+          <ul class="tags tags-small">{% for tech in project.stack[:8] %}<li>{{ tech }}</li>{% endfor %}</ul>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
