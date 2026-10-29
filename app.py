@@ -397,6 +397,11 @@ EDUCATION = {
             "stage": "Third year, TYBScCS (Cloud Computing)",
             "slugs": ["cloud-campus", "face-recognition-attendance", "project-management-rag", "milo-ai-study-partner"],
         },
+        {
+            "period": "2026–27",
+            "stage": "Fourth year, Honours",
+            "slugs": ["agrisakha", "industrial-maintenance-dashboard"],
+        },
     ],
 }
 
@@ -412,7 +417,7 @@ ABOUT = {
         "I’m studying B.Sc. Computer Science with a Cloud Computing specialisation at MIT World Peace University in Pune. Most of what I’ve built has been team work for coursework, and the projects on this site are the clearest record of how that work has developed.",
         "It started in second year with a voice-controlled AI agent: a team project on LiveKit that chained speech recognition, a language model and speech synthesis into one real-time pipeline. Its limits (background noise, accents, a robotic voice) taught as much as its features did.",
         "Third year brought four projects across two semesters. In semester 5: Cloud Campus, a Flask study-notes platform that keeps its files in AWS S3, and a webcam attendance system built on OpenCV and Firebase. In semester 6: a project tracker with retrieval-augmented search on PostgreSQL and pgvector, and Milo, an AI study partner built with React, FastAPI and Groq.",
-        "Two more projects now run live on their own subdomains of this site: Agrisakha, a crop-leaf health assistant in English, Hindi and Marathi, and an industrial maintenance dashboard with live telemetry, alerts and work orders.",
+        "Fourth year has added two projects that run live on their own subdomains of this site: Agrisakha, a crop-leaf health assistant in English, Hindi and Marathi, and an industrial maintenance dashboard with live telemetry, alerts and work orders.",
         "Python is the thread through most of them. I enjoy the part after the code works: containers, CI/CD and getting an app running somewhere real. This portfolio is one example. It’s a Flask app that ships through Jenkins and Docker Hub to Kubernetes on AWS EC2.",
     ],
 }

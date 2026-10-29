@@ -88,6 +88,8 @@ check('class="toc"' in detail_html and 'id="targets"' in detail_html and 'id="ne
 
 for host in ("agrisakha.nachiketkulkarni.in", "maintenance.nachiketkulkarni.in"):
     check(f"https://{host}" in home_html, f"homepage links to live site {host}")
+for slug in ("agrisakha", "industrial-maintenance-dashboard"):
+    check(f'href="/projects/{slug}"' in home_html.split('id="education"')[1], f"education timeline links to {slug}")
 live_html = client.get("/live").get_data(as_text=True)
 check("Live projects" in live_html and live_html.count("Open ") >= 2, "/live lists both live projects with open buttons")
 check("/live" in home_html, "homepage navigation links to the Live projects page")
